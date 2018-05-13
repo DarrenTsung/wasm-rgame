@@ -4,6 +4,8 @@ pub use self::drawables::{DrawRect, DrawActionColor};
 // NOTE: this must match in render.js
 const MAX_DRAW_ARRAY_SIZE : usize = 1000;
 
+pub type Color = [u8; 4];
+
 pub struct Graphics {
     ordering: usize,
     draw_rects: [DrawRect; MAX_DRAW_ARRAY_SIZE],
@@ -44,7 +46,7 @@ impl Graphics {
         self.draw_action_colors_index = 0;
     }
 
-    pub fn draw_rect(&mut self, pos_x: i32, pos_y: i32, width: u16, height: u16, color: [u8; 4]) {
+    pub fn draw_rect(&mut self, pos_x: i32, pos_y: i32, width: u16, height: u16, color: Color) {
         assert!(self.draw_rects_index < MAX_DRAW_ARRAY_SIZE);
 
         self.draw_rects[self.draw_rects_index] = DrawRect {
@@ -62,7 +64,7 @@ impl Graphics {
     }
 
     /// Sets the color if it is different from the last draw color change
-    fn set_color(&mut self, color: [u8; 4]) {
+    fn set_color(&mut self, color: Color) {
         // if no color is set yet or the last color is not the same as this color
         if self.draw_action_colors_index == 0 ||
             !self.draw_action_colors[self.draw_action_colors_index - 1].same_color(color)

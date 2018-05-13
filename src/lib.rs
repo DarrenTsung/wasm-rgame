@@ -23,4 +23,9 @@ pub use application::{
     MouseEvent,
     MouseState,
 };
-pub use graphics::{Graphics, DrawRect, DrawActionColor};
+pub use graphics::{
+    Graphics,
+    DrawRect,
+    DrawActionColor,
+    Color,
+};
