@@ -1,5 +1,6 @@
 #[macro_use] extern crate bitflags;
 
+extern crate dmsort;
 extern crate raii_counter;
 
 mod application;

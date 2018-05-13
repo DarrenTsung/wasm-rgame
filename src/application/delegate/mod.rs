@@ -10,14 +10,20 @@ pub use self::manager::{DelegateManager, DelegateSpawner};
 ///
 /// The order of objects receiving updates is opaque and subject to change.
 pub trait Delegate {
+    /// The order in which tick is called is opaque, do not depend on it.
     fn tick(
         &mut self,
         context: &mut ApplicationContext,
         key_manager: &KeyManager,
         mouse_manager: &MouseManager,
         delegate_spawner: &mut DelegateSpawner,
-        graphics: &mut Graphics,
     );
+
+    fn render(&self, graphics: &mut Graphics);
+
+    /// Objects that have a higher render_order will be rendered
+    /// on top of objects with a lower order
+    fn render_order(&self) -> i32 { 0 }
 }
 
 /// Trait for delegates that can be "spawned" on an DelegateManager
