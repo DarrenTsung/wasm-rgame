@@ -46,15 +46,15 @@ impl Graphics {
         self.draw_action_colors_index = 0;
     }
 
-    pub fn draw_rect(&mut self, pos_x: i32, pos_y: i32, width: u16, height: u16, color: Color) {
+    pub fn draw_rect(&mut self, pos_x: f32, pos_y: f32, width: f32, height: f32, color: Color) {
         assert!(self.draw_rects_index < MAX_DRAW_ARRAY_SIZE);
 
         self.draw_rects[self.draw_rects_index] = DrawRect {
-            ordering: self.ordering as i32,
+            ordering: self.ordering as f32,
             pos_x,
             pos_y,
-            width: width as i32,
-            height: height as i32,
+            width,
+            height,
         };
         self.draw_rects_index += 1;
 

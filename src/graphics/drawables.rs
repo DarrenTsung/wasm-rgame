@@ -5,11 +5,11 @@ const _DRAW_ACTION_COLOR_SIZE : usize = 5;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct DrawRect {
-    pub ordering: i32,
-    pub pos_x: i32,
-    pub pos_y: i32,
-    pub width: i32,
-    pub height: i32,
+    pub ordering: f32,
+    pub pos_x: f32,
+    pub pos_y: f32,
+    pub width: f32,
+    pub height: f32,
 }
 
 #[derive(Copy, Clone)]
@@ -24,7 +24,7 @@ pub struct DrawActionColor {
 
 impl DrawRect {
     pub const EMPTY: DrawRect = DrawRect {
-        ordering: 0, pos_x: 0, pos_y: 0, width: 0, height: 0,
+        ordering: 0.0, pos_x: 0.0, pos_y: 0.0, width: 0.0, height: 0.0,
     };
 }
 
