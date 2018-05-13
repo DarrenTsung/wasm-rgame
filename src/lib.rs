@@ -1,5 +1,3 @@
-#[macro_use] extern crate bitflags;
-
 extern crate dmsort;
 extern crate raii_counter;
 
@@ -23,6 +21,8 @@ pub use application::{
     MouseManager,
     MouseEvent,
     MouseState,
+    MouseButton,
+    MouseButtonState,
 };
 pub use graphics::{
     Graphics,

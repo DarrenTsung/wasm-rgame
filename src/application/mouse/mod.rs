@@ -3,19 +3,19 @@ use std::ops::Deref;
 // These must match mouse_listener.js
 pub const MOUSE_EVENT_MAX : usize = 100;
 
-bitflags! {
-    pub(self) struct MouseButtons: u32 {
-        const EMPTY      = 0b00000000;
-        const PRIMARY    = 0b00000001;
-        const SECONDARY  = 0b00000010;
-    }
+#[repr(u32)]
+#[derive(Clone, Copy)]
+pub enum MouseButton {
+    Left = 1,
+    Middle = 2,
+    Right = 3,
 }
 
 pub mod event;
 pub use self::event::{MouseEvent, MouseEventType};
 
 pub mod state;
-pub use self::state::{MouseState};
+pub use self::state::{MouseState, MouseButtonState};
 
 /// The type tracking and managing the state of the mouse
 pub struct MouseManager {

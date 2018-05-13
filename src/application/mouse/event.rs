@@ -1,4 +1,4 @@
-use super::MouseButtons;
+use super::MouseButton;
 
 // This must match in mouse_listener.js
 const _MOUSE_EVENT_SIZE : usize = 4;
@@ -6,7 +6,7 @@ const _MOUSE_EVENT_SIZE : usize = 4;
 #[derive(Clone, Copy)]
 pub struct MouseEvent {
     pub(crate) event_type: MouseEventType,
-    pub(super) buttons: MouseButtons,
+    pub(super) button: MouseButton,
     pub(super) pos_mx: u32,
     pub(super) pos_my: u32,
 }
@@ -14,7 +14,7 @@ pub struct MouseEvent {
 impl MouseEvent {
     pub const NONE : MouseEvent = MouseEvent {
         event_type: MouseEventType::None,
-        buttons: MouseButtons::PRIMARY,
+        button: MouseButton::Left,
         pos_mx: 0,
         pos_my: 0,
     };
@@ -25,8 +25,9 @@ impl MouseEvent {
 #[allow(dead_code)] // This is set from the javascript side
 pub enum MouseEventType {
     None = 0,
-    Click = 1,
-    Move = 2,
-    Over = 3,
-    Out = 4,
+    Down = 1,
+    Up = 2,
+    Move = 3,
+    Over = 4,
+    Out = 5,
 }

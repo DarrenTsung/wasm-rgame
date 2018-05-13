@@ -4,6 +4,5 @@ version = "0.1.0"
 authors = ["Darren Tsung <darren.tsung@gmail.com>"]
 
 [dependencies]
-bitflags = "1.0"
 raii-counter = "0.1"
 dmsort = "0.1"
