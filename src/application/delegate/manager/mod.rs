@@ -53,7 +53,7 @@ impl DelegateManager {
         mouse_manager: &MouseManager,
         graphics: &mut Graphics,
     ) {
-        // if a delegate no longer has handles, they are dropped
+        // if a spawned delegate no longer has handles, they are dropped
         self.delegates.retain(|d| d.handles_counter.count() > 0);
 
         for mut delegate in self.root_delegates.iter_mut() {
