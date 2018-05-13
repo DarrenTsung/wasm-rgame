@@ -1,3 +1,5 @@
+use std::ops::Deref;
+
 // These must match mouse_listener.js
 pub const MOUSE_EVENT_MAX : usize = 100;
 
@@ -36,11 +38,6 @@ impl MouseManager {
         self.mouse_events.as_ptr()
     }
 
-    /// Get the MouseState struct, used to query for the state of the mouse
-    pub fn mouse_state(&self) -> &MouseState {
-        &self.mouse_state
-    }
-
     /// Updates the mouse state given the list of events
     pub(super) fn pre_tick_process_mouse_state(&mut self) {
         self.mouse_state.start_update();
@@ -52,5 +49,13 @@ impl MouseManager {
 
             self.mouse_state.update(event);
         }
+    }
+}
+
+impl Deref for MouseManager {
+    type Target = MouseState;
+
+    fn deref(&self) -> &Self::Target {
+        &self.mouse_state
     }
 }
