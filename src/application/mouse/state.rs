@@ -69,11 +69,11 @@ impl MouseButtonState {
         self.buttons_clicked.iter().any(|buttons| buttons.contains(MouseButtons::PRIMARY))
     }
 
-    pub(self) fn reset(&mut self) {
+    fn reset(&mut self) {
         self.buttons_clicked.clear();
     }
 
-    pub(self) fn process_click_event(&mut self, event: &MouseEvent) {
+    fn process_click_event(&mut self, event: &MouseEvent) {
         debug_assert!(event.event_type == MouseEventType::Click);
 
         self.buttons_clicked.push(event.buttons);
