@@ -35,19 +35,18 @@ impl MouseState {
             MouseEventType::None => (),
             MouseEventType::Click => {
                 self.button_state.process_click_event(event);
+                self.update_pos_with_event(event);
             },
             MouseEventType::Move => {
-                self.prev_x = self.pos_x;
-                self.prev_y = self.pos_y;
-
-                self.pos_x = event.pos_mx as f32 / 1000.0;
-                self.pos_y = event.pos_my as f32 / 1000.0;
+                self.update_pos_with_event(event);
             },
             MouseEventType::Over => {
                 self.on_screen = true;
+                self.update_pos_with_event(event);
             },
             MouseEventType::Out => {
                 self.on_screen = false;
+                self.update_pos_with_event(event);
             },
         }
     }
@@ -55,6 +54,14 @@ impl MouseState {
     pub(super) fn start_update(&mut self) {
         self.prev_on_screen = self.on_screen;
         self.button_state.reset();
+    }
+
+    fn update_pos_with_event(&mut self, event: &MouseEvent) {
+        self.prev_x = self.pos_x;
+        self.prev_y = self.pos_y;
+
+        self.pos_x = event.pos_mx as f32 / 1000.0;
+        self.pos_y = event.pos_my as f32 / 1000.0;
     }
 }
 
