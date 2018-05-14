@@ -25,7 +25,7 @@ impl DelegateSpawner {
     /// Dropping all instances of the SpawnHandle will cause the delegate to be dropped.
     pub fn spawn<D>(
         &mut self,
-        spawnable_delegate: D
+        mut spawnable_delegate: D
     ) -> SpawnHandle<D::Handle>
     where
         D: 'static + SpawnableDelegate
@@ -33,6 +33,7 @@ impl DelegateSpawner {
         let handle = spawnable_delegate.handle();
         let handle_counter = Counter::new();
 
+        spawnable_delegate.on_spawn(self);
         self.spawned_delegates.push(SpawnedDelegate {
             inner: Box::new(spawnable_delegate),
             handles_counter: handle_counter.clone().downgrade(),
@@ -46,7 +47,8 @@ impl DelegateSpawner {
 
     /// Takes ownership of a Delegate, it is held for the
     /// lifetime of the entire Application
-    pub fn spawn_root<D: 'static + Delegate>(&mut self, delegate: D) {
+    pub fn spawn_root<D: 'static + Delegate>(&mut self, mut delegate: D) {
+        delegate.on_spawn(self);
         self.spawned_root_delegates.push(Box::new(delegate));
     }
 

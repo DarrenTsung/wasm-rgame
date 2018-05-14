@@ -10,6 +10,12 @@ pub use self::manager::{DelegateManager, DelegateSpawner};
 ///
 /// The order of objects receiving updates is opaque and subject to change.
 pub trait Delegate {
+    /// Optional method to do things on spawn
+    fn on_spawn(
+        &mut self,
+        _delegate_spawner: &mut DelegateSpawner,
+    ) {}
+
     /// The order in which tick is called is opaque, do not depend on it.
     fn tick(
         &mut self,

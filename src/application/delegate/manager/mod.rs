@@ -45,7 +45,8 @@ impl DelegateManager {
 
     /// Takes ownership of a Delegate, it is held onto for the
     /// lifetime of the DelegateManager (the entire Application lifetime)
-    pub fn spawn_root<D: 'static + Delegate>(&mut self, delegate: D) {
+    pub fn spawn_root<D: 'static + Delegate>(&mut self, mut delegate: D) {
+        delegate.on_spawn(&mut self.spawner);
         self.root_delegates.push(Box::new(delegate));
     }
 
