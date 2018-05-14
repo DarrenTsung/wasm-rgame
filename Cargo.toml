@@ -6,3 +6,4 @@ authors = ["Darren Tsung <darren.tsung@gmail.com>"]
 [dependencies]
 raii-counter = "0.1"
 dmsort = "0.1"
+lazy_static = "1.0"

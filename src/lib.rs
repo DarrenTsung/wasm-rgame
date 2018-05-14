@@ -1,7 +1,10 @@
+#[macro_use] extern crate lazy_static;
+
 extern crate dmsort;
 extern crate raii_counter;
 
 mod application;
+mod canvas;
 mod graphics;
 pub mod delegate_prelude;
 
@@ -24,6 +27,9 @@ pub use application::{
     MouseButton,
     MouseButtonState,
 };
+
+pub use canvas::{CANVAS, Canvas};
+
 pub use graphics::{
     Graphics,
     DrawRect,

@@ -1,4 +1,5 @@
 use graphics::Graphics;
+use super::CANVAS;
 
 pub mod key;
 pub use self::key::{KeyManager, KeyCodeState, key_codes};
@@ -34,9 +35,9 @@ impl Application {
     }
 
     /// WARNING: JS Exported Function - not intended for normal use
-    pub fn new(canvas_width: u32, canvas_height: u32) -> Application {
+    pub fn new() -> Application {
         Application {
-            context: ApplicationContext::new(canvas_width, canvas_height),
+            context: ApplicationContext::new(),
             key_manager: KeyManager::new(),
             mouse_manager: MouseManager::new(),
             delegate_manager: DelegateManager::new(),
@@ -44,7 +45,7 @@ impl Application {
     }
 
     /// WARNING: JS Exported Function - not intended for normal use
-    pub fn canvas_properties_ptr(&self) -> *const u32 { self.context.canvas_properties_ptr() }
+    pub fn canvas_properties_ptr(&self) -> *const u32 { CANVAS.canvas_properties_ptr() }
 
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn keys_ptr(&self) -> *const KeyCodeState { self.key_manager.keys_ptr() }
