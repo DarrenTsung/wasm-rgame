@@ -34,5 +34,6 @@ pub use graphics::{
     Graphics,
     DrawRect,
     DrawActionColor,
+    StringProperties,
     Color,
 };

@@ -1,8 +1,9 @@
 pub mod drawables;
-pub use self::drawables::{DrawRect, DrawActionColor};
+pub use self::drawables::{DrawRect, StringProperties, DrawActionColor};
 
 // NOTE: this must match in render.js
-const MAX_DRAW_ARRAY_SIZE : usize = 1000;
+const MAX_DRAW_ARRAY_SIZE : usize = 500;
+const MAX_STRING_ARRAY_SIZE : usize = 1_000;
 
 pub type Color = [u8; 4];
 
@@ -12,6 +13,10 @@ pub struct Graphics {
     draw_rects_index: usize,
     draw_action_colors: [DrawActionColor; MAX_DRAW_ARRAY_SIZE],
     draw_action_colors_index: usize,
+    strings: [u8; MAX_STRING_ARRAY_SIZE],
+    strings_index: usize,
+    string_properties: [StringProperties; MAX_DRAW_ARRAY_SIZE],
+    string_properties_index: usize,
 }
 
 impl Graphics {
@@ -23,6 +28,10 @@ impl Graphics {
             draw_rects_index: 0,
             draw_action_colors: [DrawActionColor::EMPTY; MAX_DRAW_ARRAY_SIZE],
             draw_action_colors_index: 0,
+            strings: [0; MAX_STRING_ARRAY_SIZE],
+            strings_index: 0,
+            string_properties: [StringProperties::EMPTY; MAX_DRAW_ARRAY_SIZE],
+            string_properties_index: 0,
         }
     }
 
@@ -38,12 +47,26 @@ impl Graphics {
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn draw_action_colors_len(&self) -> usize { self.draw_action_colors_index }
 
+    /// WARNING: JS Exported Function - not intended for normal use
+    pub fn strings_ptr(&self) -> *const u8 { self.strings.as_ptr() }
+
+    /// WARNING: JS Exported Function - not intended for normal use
+    pub fn string_properties_ptr(&self) -> *const StringProperties { self.string_properties.as_ptr() }
+
+    /// WARNING: JS Exported Function - not intended for normal use
+    pub fn string_properties_len(&self) -> usize { self.string_properties_index }
+
     /// Clearing Graphics for the next frame
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn reset(&mut self) {
-        self.ordering = 0;
+        self.ordering = 1;
+        self.draw_rects[0] = DrawRect::EMPTY;
         self.draw_rects_index = 0;
+        self.draw_action_colors[0] = DrawActionColor::EMPTY;
         self.draw_action_colors_index = 0;
+        self.string_properties[0] = StringProperties::EMPTY;
+        self.string_properties_index = 0;
+        self.strings_index = 0;
     }
 
     pub fn draw_rect(&mut self, pos_x: f32, pos_y: f32, width: f32, height: f32, color: Color) {
@@ -59,7 +82,27 @@ impl Graphics {
         self.draw_rects_index += 1;
 
         self.set_color(color);
+        self.ordering += 1;
+    }
 
+    pub fn draw_string(&mut self, s: &str, pos_x: f32, pos_y: f32, font_size: f32, color: Color) {
+        for byte in s.as_bytes() {
+            self.strings[self.strings_index] = *byte;
+            self.strings_index += 1;
+        }
+        // terminate the string with 0
+        self.strings[self.strings_index] = 0;
+        self.strings_index += 1;
+
+        self.string_properties[self.string_properties_index] = StringProperties {
+            ordering: self.ordering as f32,
+            pos_x,
+            pos_y,
+            font_size,
+        };
+        self.string_properties_index += 1;
+
+        self.set_color(color);
         self.ordering += 1;
     }
 

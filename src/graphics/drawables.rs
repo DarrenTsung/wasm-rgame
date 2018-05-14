@@ -1,6 +1,7 @@
 // NOTE: This must match in graphics.js
 const _DRAW_RECT_SIZE : usize = 5;
 const _DRAW_ACTION_COLOR_SIZE : usize = 5;
+const _STRING_PROPERTIES_SIZE : usize = 4;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -10,6 +11,15 @@ pub struct DrawRect {
     pub pos_y: f32,
     pub width: f32,
     pub height: f32,
+}
+
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct StringProperties {
+    pub ordering: f32,
+    pub pos_x: f32,
+    pub pos_y: f32,
+    pub font_size: f32,
 }
 
 #[derive(Copy, Clone)]
@@ -25,6 +35,12 @@ pub struct DrawActionColor {
 impl DrawRect {
     pub const EMPTY: DrawRect = DrawRect {
         ordering: 0.0, pos_x: 0.0, pos_y: 0.0, width: 0.0, height: 0.0,
+    };
+}
+
+impl StringProperties {
+    pub const EMPTY: StringProperties = StringProperties {
+        ordering: 0.0, pos_x: 0.0, pos_y: 0.0, font_size: 0.0,
     };
 }
 
