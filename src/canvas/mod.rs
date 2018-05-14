@@ -29,19 +29,19 @@ impl Canvas {
         self.inner.read().unwrap_or_else(|e| e.into_inner()).canvas_properties.as_ptr()
     }
 
-    pub fn canvas_width(&self) -> u32 {
+    pub fn width(&self) -> u32 {
         self.inner.read().unwrap_or_else(|e| e.into_inner()).canvas_properties[CANVAS_WIDTH_INDEX]
     }
 
-    pub fn canvas_height(&self) -> u32 {
-        self.inner.read().unwrap_or_else(|e| e.into_inner()).canvas_properties[CANVAS_HEIGHT_INDEX] 
+    pub fn height(&self) -> u32 {
+        self.inner.read().unwrap_or_else(|e| e.into_inner()).canvas_properties[CANVAS_HEIGHT_INDEX]
     }
 
-    pub fn set_canvas_width(&self, val: u32) {
+    pub fn set_width(&self, val: u32) {
         self.inner.write().unwrap_or_else(|e| e.into_inner()).canvas_properties[CANVAS_WIDTH_INDEX] = val;
     }
 
-    pub fn set_canvas_height(&self, val: u32) {
+    pub fn set_height(&self, val: u32) {
         self.inner.write().unwrap_or_else(|e| e.into_inner()).canvas_properties[CANVAS_HEIGHT_INDEX] = val;
     }
 }
