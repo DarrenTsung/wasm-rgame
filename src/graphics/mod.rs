@@ -23,7 +23,7 @@ impl Graphics {
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn new() -> Graphics {
         Graphics {
-            ordering: 0,
+            ordering: 1,
             draw_rects: [DrawRect::EMPTY; MAX_DRAW_ARRAY_SIZE],
             draw_rects_index: 0,
             draw_action_colors: [DrawActionColor::EMPTY; MAX_DRAW_ARRAY_SIZE],
