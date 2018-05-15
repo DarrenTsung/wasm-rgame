@@ -11,10 +11,10 @@ pub enum MouseButton {
     Right = 3,
 }
 
-pub mod event;
-pub use self::event::{MouseEvent, MouseEventType};
+mod event;
+use self::event::{MouseEvent, MouseEventType};
 
-pub mod state;
+mod state;
 pub use self::state::{MouseState, MouseButtonState};
 
 /// The type tracking and managing the state of the mouse
@@ -34,8 +34,8 @@ impl MouseManager {
 
     /// Get pointer to the keys rect
     /// WARNING: JS Exported Function - not intended for normal use
-    pub fn mouse_events_ptr(&self) -> *const MouseEvent {
-        self.mouse_events.as_ptr()
+    pub fn mouse_events_ptr(&self) -> *const u32 {
+        unsafe { ::std::mem::transmute::<*const MouseEvent, *const u32>(self.mouse_events.as_ptr()) }
     }
 
     /// Updates the mouse state given the list of events

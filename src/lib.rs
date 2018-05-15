@@ -89,7 +89,6 @@ pub use application::{
     KeyCodeState,
 
     MouseManager,
-    MouseEvent,
     MouseState,
     MouseButton,
     MouseButtonState,

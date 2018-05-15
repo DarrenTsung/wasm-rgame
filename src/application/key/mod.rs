@@ -28,8 +28,8 @@ impl KeyManager {
 
     /// Get pointer to the keys rect
     /// WARNING: JS Exported Function - not intended for normal use
-    pub fn keys_ptr(&self) -> *const KeyCodeState {
-        self.keys.as_ptr()
+    pub fn keys_ptr(&self) -> *const u8 {
+        unsafe { ::std::mem::transmute::<*const KeyCodeState, *const u8>(self.keys.as_ptr()) }
     }
 
     /// Transition key states as we only get KeyCodeState::Up && KeyCodeState::Down

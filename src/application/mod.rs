@@ -1,19 +1,19 @@
 use graphics::Graphics;
 use super::CANVAS;
 
-pub mod key;
+mod key;
 pub use self::key::{KeyManager, KeyCodeState, key_codes};
 
-pub mod mouse;
+mod mouse;
 pub use self::mouse::{
-    MouseManager, MouseEvent, MouseState, MouseEventType, MouseButton, MouseButtonState,
+    MouseManager, MouseState, MouseButton, MouseButtonState,
 };
 
-pub mod delegate;
+mod delegate;
 pub use self::delegate::{DelegateSpawner, Delegate, SpawnableDelegate, SpawnHandle};
 use self::delegate::DelegateManager;
 
-pub mod context;
+mod context;
 pub use self::context::ApplicationContext;
 
 pub struct Application {
@@ -48,10 +48,10 @@ impl Application {
     pub fn canvas_properties_ptr(&self) -> *const u32 { CANVAS.canvas_properties_ptr() }
 
     /// WARNING: JS Exported Function - not intended for normal use
-    pub fn keys_ptr(&self) -> *const KeyCodeState { self.key_manager.keys_ptr() }
+    pub fn keys_ptr(&self) -> *const u8 { self.key_manager.keys_ptr() }
 
     /// WARNING: JS Exported Function - not intended for normal use
-    pub fn mouse_events_ptr(&self) -> *const MouseEvent { self.mouse_manager.mouse_events_ptr() }
+    pub fn mouse_events_ptr(&self) -> *const u32 { self.mouse_manager.mouse_events_ptr() }
 
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn tick(&mut self, graphics: &mut Graphics, delta_s: f64) {
