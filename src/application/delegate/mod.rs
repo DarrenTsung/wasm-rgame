@@ -6,7 +6,7 @@ use super::{ApplicationContext, KeyManager, MouseManager};
 mod manager;
 pub use self::manager::{DelegateManager, DelegateSpawner};
 
-/// Trait for defining an interface for objects receiving updates from the application
+/// Trait for defining an interface for objects receiving updates from the application.
 ///
 /// The order of objects receiving updates is opaque and subject to change.
 pub trait Delegate {
@@ -25,16 +25,18 @@ pub trait Delegate {
         delegate_spawner: &mut DelegateSpawner,
     );
 
+    /// Render the object, the order in which render is called depends on the render_order.
     fn render(&self, graphics: &mut Graphics);
 
     /// Objects that have a higher render_order will be rendered
-    /// on top of objects with a lower order
+    /// on top of objects with a lower order. Changing the render_order
+    /// after spawn is not yet supported.
     fn render_order(&self) -> i32 { 0 }
 }
 
-/// Trait for delegates that can be "spawned" on an DelegateManager
+/// Trait for delegates that can be "spawned" on an DelegateManager.
 /// This trait defines the method of communciation with the spawned object
-/// as ownership is passed to the DelegateManager
+/// as ownership is passed to the DelegateManager.
 pub trait SpawnableDelegate : Delegate {
     type Handle: Clone;
 
