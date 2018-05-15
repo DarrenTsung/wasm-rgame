@@ -24,7 +24,7 @@
 //! These examples are taken from [wrg-snake](https://github.com/DarrenTsung/wrg-snake). Also note that these examples can't be run stand-alone as they require the Javascript/HTML framework.
 //!
 //! Rendering a transparent overlay:
-//! ```rust
+//! ```rust,ignore
 //! use wasm_rgame::{Delegate, Graphics};
 //!
 //! impl Delegate for MyObject {
@@ -44,7 +44,7 @@
 //! ```
 //!
 //! Checking keyboard input:
-//! ```rust
+//! ```rust,ignore
 //! use wasm_rgame::{KeyManager, key_codes};
 //!
 //! pub fn store_direction_change(&mut self, key_manager: &KeyManager) {
