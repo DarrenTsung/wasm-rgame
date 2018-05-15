@@ -98,8 +98,5 @@ pub use canvas::{CANVAS, Canvas};
 
 pub use graphics::{
     Graphics,
-    DrawRect,
-    DrawActionColor,
-    StringProperties,
     Color,
 };

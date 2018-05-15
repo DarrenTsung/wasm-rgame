@@ -1,5 +1,7 @@
-pub mod drawables;
-pub use self::drawables::{DrawRect, StringProperties, DrawActionColor};
+use std::mem;
+
+mod drawables;
+use self::drawables::{DrawRect, StringProperties, DrawActionColor};
 
 // NOTE: this must match in render.js
 const MAX_DRAW_ARRAY_SIZE : usize = 500;
@@ -36,13 +38,13 @@ impl Graphics {
     }
 
     /// WARNING: JS Exported Function - not intended for normal use
-    pub fn draw_rects_ptr(&self) -> *const DrawRect { self.draw_rects.as_ptr() }
+    pub fn draw_rects_ptr(&self) -> *const f32 { unsafe { mem::transmute::<*const DrawRect, *const f32>(self.draw_rects.as_ptr()) } }
 
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn draw_rects_len(&self) -> usize { self.draw_rects_index }
 
     /// WARNING: JS Exported Function - not intended for normal use
-    pub fn draw_action_colors_ptr(&self) -> *const DrawActionColor { self.draw_action_colors.as_ptr() }
+    pub fn draw_action_colors_ptr(&self) -> *const u8 { unsafe { mem::transmute::<*const DrawActionColor, *const u8>(self.draw_action_colors.as_ptr()) } }
 
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn draw_action_colors_len(&self) -> usize { self.draw_action_colors_index }
@@ -51,7 +53,7 @@ impl Graphics {
     pub fn strings_ptr(&self) -> *const u8 { self.strings.as_ptr() }
 
     /// WARNING: JS Exported Function - not intended for normal use
-    pub fn string_properties_ptr(&self) -> *const StringProperties { self.string_properties.as_ptr() }
+    pub fn string_properties_ptr(&self) -> *const f32 { unsafe { mem::transmute::<*const StringProperties, *const f32>(self.string_properties.as_ptr()) } }
 
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn string_properties_len(&self) -> usize { self.string_properties_index }
