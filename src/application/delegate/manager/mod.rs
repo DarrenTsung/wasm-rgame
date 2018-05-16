@@ -11,7 +11,6 @@ use dmsort;
 use graphics::Graphics;
 use raii_counter::WeakCounter;
 use std::cmp;
-use std::ops::{Deref, DerefMut};
 
 mod spawner;
 pub use self::spawner::DelegateSpawner;

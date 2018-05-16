@@ -1,5 +1,4 @@
 use graphics::Graphics;
-use std::ops::{Deref, DerefMut};
 use super::Canvas;
 
 mod key;
