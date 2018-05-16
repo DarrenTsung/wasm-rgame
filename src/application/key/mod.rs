@@ -28,7 +28,6 @@ impl KeyManager {
     }
 
     #[doc(hidden)]
-    /// Get pointer to the keys rect
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn keys_ptr(&self) -> *const u8 {
         unsafe { ::std::mem::transmute::<*const KeyCodeState, *const u8>(self.keys.as_ptr()) }
@@ -56,11 +55,12 @@ impl KeyManager {
         self.key_state(key_code) == KeyCodeState::Down
     }
 
-    /// Returns true every frame the key is pressed.
+    /// Returns true every frame the key is pressed. This includes
+    /// the frame where the key was just pressed as well.
     ///
     /// A list of KeyCodes can be found in the `key_code` module,
     /// but any KeyCode reported by Javascript is supported.
-    pub fn key(&self, key_code: usize) -> bool {
+    pub fn key_pressed(&self, key_code: usize) -> bool {
         match self.key_state(key_code) {
             KeyCodeState::Down | KeyCodeState::Held => true,
             _ => false,

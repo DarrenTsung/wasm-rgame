@@ -1,7 +1,7 @@
 use graphics::Graphics;
 use raii_counter::Counter;
 use std::ops::{Deref, DerefMut};
-use super::{ApplicationContext, KeyManager, MouseManager};
+use super::{ApplicationContext, KeyManager, MouseState};
 
 mod manager;
 pub use self::manager::{DelegateManager, DelegateSpawner};
@@ -21,7 +21,7 @@ pub trait Delegate {
         &mut self,
         context: &mut ApplicationContext,
         key_manager: &KeyManager,
-        mouse_manager: &MouseManager,
+        mouse_state: &MouseState,
         delegate_spawner: &mut DelegateSpawner,
     );
 

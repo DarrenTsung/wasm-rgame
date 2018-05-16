@@ -7,8 +7,13 @@ pub use super::{
     SpawnHandle,
 
     ApplicationContext,
+
     KeyManager,
-    MouseManager,
+
+    MouseState,
+    MouseButton,
+
     DelegateSpawner,
+
     Graphics,
 };

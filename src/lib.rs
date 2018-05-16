@@ -88,10 +88,8 @@ pub use application::{
     KeyManager,
     key_codes,
 
-    MouseManager,
     MouseState,
     MouseButton,
-    MouseButtonState,
 };
 
 pub use canvas::Canvas;

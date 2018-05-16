@@ -6,9 +6,8 @@ mod key;
 pub use self::key::{KeyManager, key_codes};
 
 mod mouse;
-pub use self::mouse::{
-    MouseManager, MouseState, MouseButton, MouseButtonState,
-};
+pub use self::mouse::{MouseState, MouseButton};
+use self::mouse::MouseManager;
 
 mod delegate;
 pub use self::delegate::{DelegateSpawner, Delegate, SpawnableDelegate, SpawnHandle};

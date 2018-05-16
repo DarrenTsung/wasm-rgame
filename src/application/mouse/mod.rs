@@ -15,7 +15,7 @@ mod event;
 use self::event::{MouseEvent, MouseEventType};
 
 mod state;
-pub use self::state::{MouseState, MouseButtonState};
+pub use self::state::MouseState;
 
 /// The type tracking and managing the state of the mouse
 pub struct MouseManager {
@@ -25,14 +25,15 @@ pub struct MouseManager {
 }
 
 impl MouseManager {
-    pub fn new() -> MouseManager {
+    pub(super) fn new() -> MouseManager {
         MouseManager {
             mouse_events: [MouseEvent::NONE; MOUSE_EVENT_MAX],
             mouse_state: MouseState::default(),
         }
     }
 
-    /// Get pointer to the keys rect
+
+    #[doc(hidden)]
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn mouse_events_ptr(&self) -> *const u32 {
         unsafe { ::std::mem::transmute::<*const MouseEvent, *const u32>(self.mouse_events.as_ptr()) }

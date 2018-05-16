@@ -1,5 +1,6 @@
 use super::{MouseButton, MouseEvent, MouseEventType};
 
+/// The type that holds the state of the Mouse. 
 pub struct MouseState {
     pub prev_on_screen: bool,
     pub on_screen: bool,
@@ -14,7 +15,7 @@ pub struct MouseState {
 }
 
 #[derive(Clone, Copy, PartialEq)]
-pub enum MouseButtonState {
+enum MouseButtonState {
     None,
     Down,
     Held,
@@ -22,7 +23,26 @@ pub enum MouseButtonState {
 }
 
 impl MouseState {
-    pub fn default() -> MouseState {
+    /// Returns true if the MouseButton was just pressed.
+    pub fn button_down(&self, button: MouseButton) -> bool {
+        self.button_state(button) == MouseButtonState::Down
+    }
+
+    /// Returns true every frame the MouseButton is pressed. This includes
+    /// the frame the MouseButton was just pressed.
+    pub fn button_pressed(&self, button: MouseButton) -> bool {
+        match self.button_state(button) {
+            MouseButtonState::Down | MouseButtonState::Held => true,
+            _ => false,
+        }
+    }
+
+    /// Returns true if the MouseButton was just released.
+    pub fn button_up(&self, button: MouseButton) -> bool {
+        self.button_state(button) == MouseButtonState::Down
+    }
+
+    pub(super) fn default() -> MouseState {
         MouseState {
             prev_on_screen: false,
             on_screen: false,
@@ -34,7 +54,7 @@ impl MouseState {
         }
     }
 
-    pub fn button_state(&self, button: MouseButton) -> MouseButtonState {
+    fn button_state(&self, button: MouseButton) -> MouseButtonState {
         self.button_states[button as usize]
     }
 

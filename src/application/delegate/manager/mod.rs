@@ -2,7 +2,7 @@ use super::{
     Delegate,
     ApplicationContext,
     KeyManager,
-    MouseManager,
+    MouseState,
     SpawnableDelegate,
     SpawnHandle,
 };
@@ -11,6 +11,7 @@ use dmsort;
 use graphics::Graphics;
 use raii_counter::WeakCounter;
 use std::cmp;
+use std::ops::{Deref, DerefMut};
 
 mod spawner;
 pub use self::spawner::DelegateSpawner;
@@ -31,7 +32,11 @@ struct SpawnedDelegate {
 }
 
 impl DelegateManager {
-    pub fn new() -> DelegateManager {
+    pub(in application) fn as_spawner(&mut self) -> &mut DelegateSpawner {
+        &mut self.spawner
+    }
+
+    pub(in application) fn new() -> DelegateManager {
         DelegateManager {
             spawner: DelegateSpawner::new(),
             root_delegates: Vec::new(),
@@ -39,32 +44,11 @@ impl DelegateManager {
         }
     }
 
-    /// Equivalent method to DelegateSpawner::spawn(), except that
-    /// the EntryPoint does not have access to DelegateSpawner
-    pub fn spawn<D>(
-        &mut self,
-        spawnable_delegate: D
-    ) -> SpawnHandle<D::Handle>
-    where
-        D: 'static + SpawnableDelegate
-    {
-        let handle = self.spawner.spawn(spawnable_delegate);
-        self.collect_from_spawner();
-        handle
-    }
-
-    /// Equivalent method to DelegateSpawner::spawn_root(), except that
-    /// the EntryPoint does not have access to DelegateSpawner
-    pub fn spawn_root<D: 'static + Delegate>(&mut self, delegate: D) {
-        self.spawner.spawn_root(delegate);
-        self.collect_from_spawner();
-    }
-
     pub(in application) fn tick(
         &mut self,
         context: &mut ApplicationContext,
         key_manager: &KeyManager,
-        mouse_manager: &MouseManager,
+        mouse_state: &MouseState,
         graphics: &mut Graphics,
     ) {
         // if a spawned delegate no longer has handles, they are dropped
@@ -79,14 +63,14 @@ impl DelegateManager {
                 // no more elements in root_delegates
                 if root_delegates_index >= self.root_delegates.len() {
                     for index in delegates_index..self.delegates.len() {
-                        self.delegates[index].inner.tick(context, key_manager, mouse_manager, &mut self.spawner);
+                        self.delegates[index].inner.tick(context, key_manager, mouse_state, &mut self.spawner);
                         self.delegates[index].inner.render(graphics);
                     }
 
                     break;
                 } else if delegates_index >= self.delegates.len() {
                     for index in root_delegates_index..self.root_delegates.len() {
-                        self.root_delegates[index].tick(context, key_manager, mouse_manager, &mut self.spawner);
+                        self.root_delegates[index].tick(context, key_manager, mouse_state, &mut self.spawner);
                         self.root_delegates[index].render(graphics);
                     }
 
@@ -102,7 +86,7 @@ impl DelegateManager {
                             break;
                         }
 
-                        self.delegates[index].inner.tick(context, key_manager, mouse_manager, &mut self.spawner);
+                        self.delegates[index].inner.tick(context, key_manager, mouse_state, &mut self.spawner);
                         self.delegates[index].inner.render(graphics);
 
                         delegates_index += 1;
@@ -113,7 +97,7 @@ impl DelegateManager {
                             break;
                         }
 
-                        self.root_delegates[index].tick(context, key_manager, mouse_manager, &mut self.spawner);
+                        self.root_delegates[index].tick(context, key_manager, mouse_state, &mut self.spawner);
                         self.root_delegates[index].render(graphics);
 
                         root_delegates_index += 1;
