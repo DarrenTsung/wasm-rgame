@@ -1,5 +1,5 @@
 use graphics::Graphics;
-use super::CANVAS;
+use super::Canvas;
 
 mod key;
 pub use self::key::{KeyManager, KeyCodeState, key_codes};
@@ -30,6 +30,8 @@ impl Application {
         self.delegate_manager.spawn_root(delegate);
     }
 
+    /// Derefs the Application into a DelegateSpawner so that non-root
+    /// delegates can be spawned
     pub fn as_spawner(&mut self) -> &mut DelegateSpawner {
         self.delegate_manager.as_spawner()
     }
@@ -45,7 +47,7 @@ impl Application {
     }
 
     /// WARNING: JS Exported Function - not intended for normal use
-    pub fn canvas_properties_ptr(&self) -> *const u32 { CANVAS.canvas_properties_ptr() }
+    pub fn canvas_properties_ptr(&self) -> *const u32 { Canvas::instance().canvas_properties_ptr() }
 
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn keys_ptr(&self) -> *const u8 { self.key_manager.keys_ptr() }

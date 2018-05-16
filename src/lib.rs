@@ -25,18 +25,19 @@
 //!
 //! Rendering a transparent overlay:
 //! ```rust,ignore
-//! use wasm_rgame::{Delegate, Graphics};
+//! use wasm_rgame::{Delegate, Graphics, Canvas};
 //!
 //! impl Delegate for MyObject {
 //!     fn tick(..) {}
 //!
 //!     fn render(&self, graphics: &mut Graphics) {
+//!         let canvas = Canvas::instance();
 //!         // draw a transparent overlay over the game
 //!         graphics.draw_rect(
 //!             0.0,
 //!             0.0,
-//!             CANVAS.width() as f32,
-//!             CANVAS.height() as f32,
+//!             canvas.width() as f32,
+//!             canvas.height() as f32,
 //!             [255, 255, 255, 150]
 //!         );
 //!     }
@@ -94,7 +95,7 @@ pub use application::{
     MouseButtonState,
 };
 
-pub use canvas::{CANVAS, Canvas};
+pub use canvas::Canvas;
 
 pub use graphics::{
     Graphics,

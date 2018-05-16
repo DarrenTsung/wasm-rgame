@@ -5,7 +5,7 @@ const CANVAS_WIDTH_INDEX: usize = 0;
 const CANVAS_HEIGHT_INDEX: usize = 1;
 
 lazy_static! {
-    pub static ref CANVAS: Canvas = Canvas {
+    static ref CANVAS: Canvas = Canvas {
         inner: Arc::new(RwLock::new(CanvasInner {
             canvas_properties: [0; 2],
         })),
@@ -18,11 +18,17 @@ pub struct Canvas {
 
 struct CanvasInner {
     /// Raw memory for accessing the canvas, used by the Js to react to
-    /// configuration changes without having to call between Js <-> Rust
+    /// configuration changes without having to call between Js <-> Rust.
     canvas_properties: [u32; 2],
 }
 
 impl Canvas {
+    /// Gets the Canvas instance for the application.
+    /// At the moment only one Canvas per application is supported.
+    pub fn instance() -> &'static Canvas {
+        &CANVAS
+    }
+
     /// Get pointer to the canvas properties rect
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn canvas_properties_ptr(&self) -> *const u32 {
