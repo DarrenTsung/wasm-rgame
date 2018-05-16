@@ -25,6 +25,12 @@ pub struct Application {
 }
 
 impl Application {
+    /// Get the mutable reference to the DelegateSpawner. Used for spawning
+    /// delegates at the EntryPoint of the application.
+    pub fn as_spawner(&mut self) -> &mut DelegateSpawner {
+        self.delegate_manager.as_spawner()
+    }
+
     #[doc(hidden)]
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn new() -> Application {
@@ -60,19 +66,5 @@ impl Application {
 
         // Post-delegates
         self.key_manager.post_tick_update_key_states();
-    }
-}
-
-impl Deref for Application {
-    type Target = DelegateManager;
-
-    fn deref(&self) -> &DelegateManager {
-        &self.delegate_manager
-    }
-}
-
-impl DerefMut for Application {
-    fn deref_mut(&mut self) -> &mut DelegateManager {
-        &mut self.delegate_manager
     }
 }
