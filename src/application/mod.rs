@@ -3,7 +3,7 @@ use std::ops::{Deref, DerefMut};
 use super::Canvas;
 
 mod key;
-pub use self::key::{KeyManager, KeyCodeState, key_codes};
+pub use self::key::{KeyManager, key_codes};
 
 mod mouse;
 pub use self::mouse::{

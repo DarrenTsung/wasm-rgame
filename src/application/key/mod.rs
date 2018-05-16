@@ -5,7 +5,7 @@ const KEY_CODE_MAX: usize = 300;
 
 #[repr(u8)]
 #[derive(Clone, Copy, PartialEq, Eq)]
-pub enum KeyCodeState {
+enum KeyCodeState {
     None = 0,
     Down = 1,
     Held = 2,
@@ -20,12 +20,13 @@ pub struct KeyManager {
 }
 
 impl KeyManager {
-    pub fn new() -> KeyManager {
+    pub(super) fn new() -> KeyManager {
         KeyManager {
             keys: [KeyCodeState::None; KEY_CODE_MAX],
         }
     }
 
+    #[doc(hidden)]
     /// Get pointer to the keys rect
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn keys_ptr(&self) -> *const u8 {

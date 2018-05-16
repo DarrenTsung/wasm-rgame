@@ -87,7 +87,6 @@ pub use application::{
 
     KeyManager,
     key_codes,
-    KeyCodeState,
 
     MouseManager,
     MouseState,
