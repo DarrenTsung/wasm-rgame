@@ -1,4 +1,5 @@
 use graphics::Graphics;
+use std::ops::{Deref, DerefMut};
 use super::Canvas;
 
 mod key;
@@ -24,18 +25,7 @@ pub struct Application {
 }
 
 impl Application {
-    /// Takes ownership of a Delegate, it is held onto for the
-    /// lifetime of the DelegateManager (the entire Application lifetime)
-    pub fn spawn_root<D: 'static + Delegate>(&mut self, delegate: D) {
-        self.delegate_manager.spawn_root(delegate);
-    }
-
-    /// Derefs the Application into a DelegateSpawner so that non-root
-    /// delegates can be spawned
-    pub fn as_spawner(&mut self) -> &mut DelegateSpawner {
-        self.delegate_manager.as_spawner()
-    }
-
+    #[doc(hidden)]
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn new() -> Application {
         Application {
@@ -46,15 +36,19 @@ impl Application {
         }
     }
 
+    #[doc(hidden)]
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn canvas_properties_ptr(&self) -> *const u32 { Canvas::instance().canvas_properties_ptr() }
 
+    #[doc(hidden)]
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn keys_ptr(&self) -> *const u8 { self.key_manager.keys_ptr() }
 
+    #[doc(hidden)]
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn mouse_events_ptr(&self) -> *const u32 { self.mouse_manager.mouse_events_ptr() }
 
+    #[doc(hidden)]
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn tick(&mut self, graphics: &mut Graphics, delta_s: f64) {
         // Pre-delegates
@@ -66,5 +60,19 @@ impl Application {
 
         // Post-delegates
         self.key_manager.post_tick_update_key_states();
+    }
+}
+
+impl Deref for Application {
+    type Target = DelegateManager;
+
+    fn deref(&self) -> &DelegateManager {
+        &self.delegate_manager
+    }
+}
+
+impl DerefMut for Application {
+    fn deref_mut(&mut self) -> &mut DelegateManager {
+        &mut self.delegate_manager
     }
 }

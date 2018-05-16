@@ -39,15 +39,25 @@ impl DelegateManager {
         }
     }
 
-    pub fn as_spawner(&mut self) -> &mut DelegateSpawner {
-        &mut self.spawner
+    /// Equivalent method to DelegateSpawner::spawn(), except that
+    /// the EntryPoint does not have access to DelegateSpawner
+    pub fn spawn<D>(
+        &mut self,
+        spawnable_delegate: D
+    ) -> SpawnHandle<D::Handle>
+    where
+        D: 'static + SpawnableDelegate
+    {
+        let handle = self.spawner.spawn(spawnable_delegate);
+        self.collect_from_spawner();
+        handle
     }
 
-    /// Takes ownership of a Delegate, it is held onto for the
-    /// lifetime of the DelegateManager (the entire Application lifetime)
-    pub fn spawn_root<D: 'static + Delegate>(&mut self, mut delegate: D) {
-        delegate.on_spawn(&mut self.spawner);
-        self.root_delegates.push(Box::new(delegate));
+    /// Equivalent method to DelegateSpawner::spawn_root(), except that
+    /// the EntryPoint does not have access to DelegateSpawner
+    pub fn spawn_root<D: 'static + Delegate>(&mut self, delegate: D) {
+        self.spawner.spawn_root(delegate);
+        self.collect_from_spawner();
     }
 
     pub(in application) fn tick(
@@ -113,28 +123,30 @@ impl DelegateManager {
         }
 
         // Collect delegates spawned by the delegate spawner
-        {
-            let prev_root_len = self.root_delegates.len();
-            let prev_delegates_len = self.delegates.len();
+        self.collect_from_spawner();
+    }
 
-            for root_delegate in self.spawner.spawned_root_delegates() {
-                self.root_delegates.push(root_delegate);
-            }
+    fn collect_from_spawner(&mut self) {
+        let prev_root_len = self.root_delegates.len();
+        let prev_delegates_len = self.delegates.len();
 
-            for delegate in self.spawner.spawned_delegates() {
-                self.delegates.push(delegate);
-            }
+        for root_delegate in self.spawner.spawned_root_delegates() {
+            self.root_delegates.push(root_delegate);
+        }
 
-            // Only run the sort if new things were added
-            if prev_root_len != self.root_delegates.len() {
-                // dmsort is supposed to be better on arrays that are almost sorted
-                // TODO: benchmark and compare if this is an issue
-                dmsort::sort_by_key(&mut self.root_delegates, |d| d.render_order());
-            }
+        for delegate in self.spawner.spawned_delegates() {
+            self.delegates.push(delegate);
+        }
 
-            if prev_delegates_len != self.delegates.len() {
-                dmsort::sort_by_key(&mut self.delegates, |d| d.inner.render_order());
-            }
+        // Only run the sort if new things were added
+        if prev_root_len != self.root_delegates.len() {
+            // dmsort is supposed to be better on arrays that are almost sorted
+            // TODO: benchmark and compare if this is an issue
+            dmsort::sort_by_key(&mut self.root_delegates, |d| d.render_order());
+        }
+
+        if prev_delegates_len != self.delegates.len() {
+            dmsort::sort_by_key(&mut self.delegates, |d| d.inner.render_order());
         }
     }
 }
