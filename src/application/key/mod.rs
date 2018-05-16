@@ -12,7 +12,8 @@ enum KeyCodeState {
     Up = 3,
 }
 
-/// The type managing the state of each KeyCode
+/// The type managing the state of the keys. Use the `key_code` module for a list
+/// of KeyCodes to query for.
 pub struct KeyManager {
     /// Raw memory for javascript to write to, used to store the current
     /// state of the KeyCode (index)
@@ -47,12 +48,18 @@ impl KeyManager {
         }
     }
 
-    /// Returns true if key was just pressed
+    /// Returns true if key was just pressed.
+    ///
+    /// A list of KeyCodes can be found in the `key_code` module,
+    /// but any KeyCode reported by Javascript is supported.
     pub fn key_down(&self, key_code: usize) -> bool {
         self.key_state(key_code) == KeyCodeState::Down
     }
 
-    /// Returns true if the key is pressed
+    /// Returns true every frame the key is pressed.
+    ///
+    /// A list of KeyCodes can be found in the `key_code` module,
+    /// but any KeyCode reported by Javascript is supported.
     pub fn key(&self, key_code: usize) -> bool {
         match self.key_state(key_code) {
             KeyCodeState::Down | KeyCodeState::Held => true,
@@ -60,12 +67,15 @@ impl KeyManager {
         }
     }
 
-    /// Returns true if key was just released
+    /// Returns true if key was just released.
+    ///
+    /// A list of KeyCodes can be found in the `key_code` module,
+    /// but any KeyCode reported by Javascript is supported.
     pub fn key_up(&self, key_code: usize) -> bool {
         self.key_state(key_code) == KeyCodeState::Up
     }
 
-    /// Returns the KeyCodeState for a given KeyCode
+    /// Returns the KeyCodeState for a given KeyCode.
     fn key_state(&self, key_code: usize) -> KeyCodeState {
         self.keys[key_code]
     }
