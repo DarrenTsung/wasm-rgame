@@ -5,6 +5,7 @@ pub use super::{
     Delegate,
     SpawnableDelegate,
     SpawnHandle,
+    SpawnHandles,
 
     ApplicationContext,
 

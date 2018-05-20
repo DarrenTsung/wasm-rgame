@@ -9,7 +9,7 @@ pub use self::mouse::{MouseState, MouseButton};
 use self::mouse::MouseManager;
 
 mod delegate;
-pub use self::delegate::{DelegateSpawner, Delegate, SpawnableDelegate, SpawnHandle};
+pub use self::delegate::{DelegateSpawner, Delegate, SpawnableDelegate, SpawnHandle, SpawnHandles};
 use self::delegate::DelegateManager;
 
 mod context;

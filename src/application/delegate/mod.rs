@@ -3,6 +3,9 @@ use raii_counter::Counter;
 use std::ops::{Deref, DerefMut};
 use super::{ApplicationContext, KeyManager, MouseState};
 
+mod handles;
+pub use self::handles::SpawnHandles;
+
 mod manager;
 pub use self::manager::{DelegateManager, DelegateSpawner};
 

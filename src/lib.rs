@@ -88,6 +88,7 @@ pub use application::{
     Delegate,
     SpawnableDelegate,
     SpawnHandle,
+    SpawnHandles,
 
     KeyManager,
     key_codes,
