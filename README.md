@@ -4,7 +4,7 @@ A Rust framework for building browser games with WASM.
 This framework was inspired by the [Game of Life Rust + WASM Tutorial](https://rust-lang-nursery.github.io/rust-wasm/game-of-life/introduction.html). You can dive right in and start writing a wasm-rgame application with the [tutorial](TODO link tutorial)!
 
 ### How It Works
-This framework abstracts away writing custom HTML/Javascript and provides Rust types that interface with the Javascript bundled in the  [wasm-rgame-js](https://github.com/DarrenTsung/wasm-rgame-js) respository.
+This framework abstracts away writing custom HTML/Javascript and provides Rust types that interface with the Javascript bundled in the [wasm-rgame-js](https://github.com/DarrenTsung/wasm-rgame-js) repository.
 
 The Rust API provides types for:
 * Keyboard events
