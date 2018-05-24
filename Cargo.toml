@@ -2,6 +2,14 @@
 name = "wasm-rgame"
 version = "0.0.1"
 authors = ["Darren Tsung <darren.tsung@gmail.com>"]
+license = "MIT"
+description = "A Rust/wasm game-engine"
+documentation = "https://docs.rs/wasm-rgame"
+homepage = "https://github.com/DarrenTsung/wasm-rgame"
+repository = "https://github.com/DarrenTsung/wasm-rgame"
+readme = "README.md"
+keywords = ["wasm", "game", "engine"]
+categories = ["games", "game-engines", "wasm"]
 
 [dependencies]
 raii-counter = "0.1"
