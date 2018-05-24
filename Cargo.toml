@@ -1,6 +1,6 @@
 [package]
 name = "wasm-rgame"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["Darren Tsung <darren.tsung@gmail.com>"]
 
 [dependencies]
