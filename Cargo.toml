@@ -15,4 +15,3 @@ categories = ["games", "game-engines", "wasm"]
 raii-counter = "0.1"
 dmsort = "0.1"
 lazy_static = "1.0"
-wasm-bindgen = "0.2"

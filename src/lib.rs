@@ -66,10 +66,7 @@
 //! }
 //! ```
 
-#![feature(proc_macro, extern_prelude, wasm_custom_section, wasm_import_module)]
-
 #[macro_use] extern crate lazy_static;
-#[macro_use] extern crate wasm_bindgen;
 
 extern crate dmsort;
 extern crate raii_counter;
@@ -78,7 +75,6 @@ mod application;
 mod canvas;
 mod graphics;
 pub mod delegate_prelude;
-pub mod bootstrap;
 
 pub use application::{
     Application,
