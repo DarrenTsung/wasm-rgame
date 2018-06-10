@@ -1,7 +1,7 @@
 use std::mem;
 
 mod drawables;
-use self::drawables::{DrawRect, StringProperties, DrawActionColor};
+use self::drawables::{DrawRect, StringProperties, DrawActionColor, DrawRotation};
 
 // NOTE: this must match in render.js
 const MAX_DRAW_ARRAY_SIZE : usize = 500;
@@ -19,6 +19,8 @@ pub struct Graphics {
     strings_index: usize,
     string_properties: [StringProperties; MAX_DRAW_ARRAY_SIZE],
     string_properties_index: usize,
+    rotations: [DrawRotation; MAX_DRAW_ARRAY_SIZE],
+    rotations_index: usize,
 }
 
 impl Graphics {
@@ -34,6 +36,8 @@ impl Graphics {
             strings_index: 0,
             string_properties: [StringProperties::EMPTY; MAX_DRAW_ARRAY_SIZE],
             string_properties_index: 0,
+            rotations: [DrawRotation::EMPTY; MAX_DRAW_ARRAY_SIZE],
+            rotations_index: 0,
         }
     }
 
@@ -58,6 +62,9 @@ impl Graphics {
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn string_properties_len(&self) -> usize { self.string_properties_index }
 
+    /// WARNING: JS Exported Function - not intended for normal use
+    pub fn rotations_ptr(&self) -> *const f32 { unsafe { mem::transmute::<*const DrawRotation, *const f32>(self.rotations.as_ptr()) } }
+
     /// Clearing Graphics for the next frame
     /// WARNING: JS Exported Function - not intended for normal use
     pub fn reset(&mut self) {
@@ -69,9 +76,11 @@ impl Graphics {
         self.string_properties[0] = StringProperties::EMPTY;
         self.string_properties_index = 0;
         self.strings_index = 0;
+        self.rotations[0] = DrawRotation::EMPTY;
+        self.rotations_index = 0;
     }
 
-    pub fn draw_rect(&mut self, pos_x: f32, pos_y: f32, width: f32, height: f32, color: Color) {
+    pub fn draw_rect(&mut self, pos_x: f32, pos_y: f32, width: f32, height: f32, color: Color, angle: f32) {
         assert!(self.draw_rects_index < MAX_DRAW_ARRAY_SIZE);
 
         self.draw_rects[self.draw_rects_index] = DrawRect {
@@ -84,6 +93,7 @@ impl Graphics {
         self.draw_rects_index += 1;
 
         self.set_color(color);
+        self.set_angle(angle);
         self.ordering += 1;
     }
 
@@ -105,6 +115,9 @@ impl Graphics {
         self.string_properties_index += 1;
 
         self.set_color(color);
+        // TODO (darren): see Javascript, rotation does not
+        // work properly for strings right now
+        // self.set_angle(angle);
         self.ordering += 1;
     }
 
@@ -125,6 +138,20 @@ impl Graphics {
             };
             self.draw_action_colors_index += 1;
         }
+    }
 
+    fn set_angle(&mut self, angle: f32) {
+        if self.rotations_index == 0 ||
+            self.rotations[self.rotations_index - 1].angle != angle
+        {
+            assert!(self.rotations_index < MAX_DRAW_ARRAY_SIZE);
+
+            self.rotations[self.rotations_index] = DrawRotation {
+                ordering: self.ordering as f32,
+                angle,
+            };
+            self.rotations_index += 1;
+            self.rotations[self.rotations_index] = DrawRotation::EMPTY;
+        }
     }
 }

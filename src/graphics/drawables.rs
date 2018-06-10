@@ -2,6 +2,7 @@
 const _DRAW_RECT_SIZE : usize = 5;
 const _DRAW_ACTION_COLOR_SIZE : usize = 5;
 const _STRING_PROPERTIES_SIZE : usize = 4;
+const _DRAW_ROTATION_SIZE : usize = 2;
 
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -32,6 +33,13 @@ pub struct DrawActionColor {
     pub alpha: u8,
 }
 
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct DrawRotation {
+    pub ordering: f32,
+    pub angle: f32,
+}
+
 impl DrawRect {
     pub const EMPTY: DrawRect = DrawRect {
         ordering: 0.0, pos_x: 0.0, pos_y: 0.0, width: 0.0, height: 0.0,
@@ -55,4 +63,10 @@ impl DrawActionColor {
             self.color_b == color[2] &&
             self.alpha == color[3]
     }
+}
+
+impl DrawRotation {
+    pub const EMPTY: DrawRotation = DrawRotation {
+        ordering: 0.0, angle: 0.0,
+    };
 }
